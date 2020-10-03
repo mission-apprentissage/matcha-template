@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { DropdownCombobox, Input } from '../../components'
+import { AnimationWrapper, DropdownCombobox, Input } from '../../components'
 import { Col, Form } from 'react-bootstrap'
 import { StepTitle, ChatBubble, QuestionTitle, NextButton, Button, InputTitle, RemoveLink } from '../../components'
 import { Context } from '../../context'
@@ -105,27 +105,29 @@ export default () => {
     <Col>
       <StepTitle>Etape 1/6 - Votre recherche </StepTitle>
       <ChatBubble>Quel est votre projet ? Je chercherai des entreprises qui y correspondent !</ChatBubble>
-      {stepState.map((item, index) => (
-        <Step
-          {...item}
-          key={index}
-          index={index}
-          handleValues={handleValues}
-          inputJobItems={inputJobItems}
-          handleJobSearch={handleJobSearch}
-          setInputJobItems={setInputJobItems}
-          handleRemoveExperience={handleRemoveExperience}
-        />
-      ))}
-      <Button experience='true' onClick={() => addItem(stepState, setStepState)}>
-        + Ajouter une expérience
-      </Button>
-      <div className='d-flex justify-content-end mb-5'>
-        <NextButton
-          onClick={() => saveContext(history, 'voeux', stepState, '/step-two', questionnaireId)}
-          disabled={!submit}
-        />
-      </div>
+      <AnimationWrapper>
+        {stepState.map((item, index) => (
+          <Step
+            {...item}
+            key={index}
+            index={index}
+            handleValues={handleValues}
+            inputJobItems={inputJobItems}
+            handleJobSearch={handleJobSearch}
+            setInputJobItems={setInputJobItems}
+            handleRemoveExperience={handleRemoveExperience}
+          />
+        ))}
+        <Button experience='true' onClick={() => addItem(stepState, setStepState)}>
+          + Ajouter une expérience
+        </Button>
+        <div className='d-flex justify-content-end mb-5'>
+          <NextButton
+            onClick={() => saveContext(history, 'voeux', stepState, '/step-two', questionnaireId)}
+            disabled={!submit}
+          />
+        </div>
+      </AnimationWrapper>
     </Col>
   )
 }
