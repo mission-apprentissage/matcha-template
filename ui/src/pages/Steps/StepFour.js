@@ -1,7 +1,6 @@
 import React from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom'
-import styled from 'styled-components'
 import color from '../../components/helper/color'
 import MomentUtils from '@date-io/moment'
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
@@ -58,35 +57,6 @@ const datePickerTheme = createMuiTheme({
   },
 })
 
-const Wrapper = styled.div`
-  ${(props) =>
-    props.index % 2 === 0 &&
-    `
-    // background: ${color.veryLightGrey}
-  `}
-`
-
-const StyledDatePicker = styled(DatePicker)`
-  width: 100%;
-  font-family: Inter;
-  .MuiInputBase-input {
-    border: 1px solid #98b0b7;
-    box-sizing: border-box;
-    border-radius: 4px;
-    font-family: Inter;
-    font-size: 1rem;
-    padding-left: 10px;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    margin-bottom: 1rem;
-    width: 100%;
-    outline: none;
-    /* ::after {
-      content: '#';
-    } */
-  }
-`
-
 const Step = (props) => {
   const {
     nom,
@@ -104,111 +74,108 @@ const Step = (props) => {
 
   return (
     <MuiPickersUtilsProvider utils={MomentUtils} locale='fr'>
-      <Wrapper index={index}>
-        {index > 0 && (
-          <div className='d-flex justify-content-between'>
-            <InputTitle bold={true}>Expérience {index + 1}</InputTitle>
-            <RemoveLink onClick={() => handleRemoveExperience(index)}>Supprimer</RemoveLink>
-          </div>
-        )}
-        <ChatBubble>
-          Décrivez moi toute expérience avec le monde du travail, qui vous a demandé d’apprendre, de progresser, des
-          responsabilités ou dont vous êtes fière.
-        </ChatBubble>
-        <QuestionTitle title='Votre expérience' />
-        <Input
-          placeholder='ranger les rayons, préparer les plans de travail, ...'
-          required
-          type='text'
-          onChange={(e) => handleChange('nom', e.target.value, index)}
-          value={nom}
-        />
-        <QuestionTitle
-          title='Vos 3 principales missions ou tâches ?'
-          subtitle='Appuyer sur Entrer pour insérer une mission/tâche'
-        />
-        <div className='pb-1'>
-          {taches &&
-            taches.map((x, i) => (
-              <Tag key={i} onClick={() => handleRemoveTag(index, i)}>
-                {x}
-              </Tag>
-            ))}
+      {index > 0 && (
+        <div className='d-flex justify-content-between'>
+          <InputTitle bold={true}>Expérience {index + 1}</InputTitle>
+          <RemoveLink onClick={() => handleRemoveExperience(index)}>Supprimer</RemoveLink>
         </div>
-        <Input
-          placeholder='entrer un mot-clé'
-          required
-          type='text'
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              handleChange('taches', e.target.value, index, true)
-              e.target.value = ''
-            }
-          }}
-          disabled={taches && taches.length === 3}
-        />
-        <ChatBubble>
-          Les employeurs portent de l’attention à cette information. Aller au plus simple en utilisant des verbes
-          d’action comme par exemple : ranger les rayons, préparer les plans de travail, organiser les activités du
-          groupe, ...
-        </ChatBubble>
-        <QuestionTitle title='Dans quelle structure ou entreprise ?' />
-        <InputTitle>Nom de l'entreprise</InputTitle>
-        <Input
-          placeholder="entrez le nom de l'entreprise"
-          onChange={(e) => handleChange('nomEntreprise', e.target.value, index)}
-          value={nomEntreprise}
-        />
-        <Autocomplete
-          title="Adresse de l'entreprise"
-          context={adresseEntreprise}
-          placeholder="entrez l'adresse de l'entreprise"
-          handleValues={handleChange}
-          index={index}
-          fullAddress={true}
-        />
-        <QuestionTitle title='Sur quelle période ?' />
-        <ThemeProvider theme={datePickerTheme}>
-          <Row className='p-0 mb-4'>
-            <Col lg={6}>
-              <InputTitle>Date de début</InputTitle>
-              <DatePicker
-                format='dddd DD MMMM yyyy'
-                placeholder='selectionner une date de début'
-                // format='DD/MM/yyyy'
-                openTo='year'
-                views={['year', 'month', 'date']}
-                value={dateDebut ? dateDebut : null}
-                onChange={(date) => {
-                  handleChange('dateDebut', moment(date).format(), index)
-                  setMinDate(date)
-                }}
-                autoOk={true}
-                InputProps={{ disableUnderline: true }}
-                cancelLabel='Annuler'
-              />
-            </Col>
-            <Col>
-              <InputTitle>Date de fin</InputTitle>
-              <StyledDatePicker
-                format='dddd DD MMMM yyyy'
-                placeholder='selectionner une date de fin'
-                value={dateFin ? (dateFin > minDate ? dateFin : minDate) : null}
-                onChange={(date) => {
-                  handleChange('dateFin', moment(date).format(), index)
-                  setMinDate(false)
-                }}
-                autoOk={true}
-                cancelLabel='Annuler'
-                initialFocusedDate={minDate}
-                minDate={minDate ? minDate : ''}
-                InputProps={{ disableUnderline: true }}
-                invalidDateMessage={false}
-              />
-            </Col>
-          </Row>
-        </ThemeProvider>
-      </Wrapper>
+      )}
+      <ChatBubble>
+        Décrivez moi toute expérience avec le monde du travail, qui vous a demandé d’apprendre, de progresser, des
+        responsabilités ou dont vous êtes fière.
+      </ChatBubble>
+      <QuestionTitle title='Votre expérience' />
+      <Input
+        placeholder='ranger les rayons, préparer les plans de travail, ...'
+        required
+        type='text'
+        onChange={(e) => handleChange('nom', e.target.value, index)}
+        value={nom}
+      />
+      <QuestionTitle
+        title='Vos 3 principales missions ou tâches ?'
+        subtitle='Appuyer sur Entrer pour insérer une mission/tâche'
+      />
+      <div className='pb-1'>
+        {taches &&
+          taches.map((x, i) => (
+            <Tag key={i} onClick={() => handleRemoveTag(index, i)}>
+              {x}
+            </Tag>
+          ))}
+      </div>
+      <Input
+        placeholder='entrer un mot-clé'
+        required
+        type='text'
+        onKeyDown={(e) => {
+          if (e.keyCode === 13) {
+            handleChange('taches', e.target.value, index, true)
+            e.target.value = ''
+          }
+        }}
+        disabled={taches && taches.length === 3}
+      />
+      <ChatBubble>
+        Les employeurs portent de l’attention à cette information. Aller au plus simple en utilisant des verbes d’action
+        comme par exemple : ranger les rayons, préparer les plans de travail, organiser les activités du groupe, ...
+      </ChatBubble>
+      <QuestionTitle title='Dans quelle structure ou entreprise ?' />
+      <InputTitle>Nom de l'entreprise</InputTitle>
+      <Input
+        placeholder="entrez le nom de l'entreprise"
+        onChange={(e) => handleChange('nomEntreprise', e.target.value, index)}
+        value={nomEntreprise}
+      />
+      <Autocomplete
+        title="Adresse de l'entreprise"
+        context={adresseEntreprise}
+        placeholder="entrez l'adresse de l'entreprise"
+        handleValues={handleChange}
+        index={index}
+        fullAddress={true}
+      />
+      <QuestionTitle title='Sur quelle période ?' />
+      <ThemeProvider theme={datePickerTheme}>
+        <Row className='p-0 mb-4'>
+          <Col lg={6}>
+            <InputTitle>Date de début</InputTitle>
+            <DatePicker
+              format='dddd DD MMMM yyyy'
+              placeholder='selectionner une date de début'
+              // format='DD/MM/yyyy'
+              openTo='year'
+              views={['year', 'month', 'date']}
+              value={dateDebut ? dateDebut : null}
+              onChange={(date) => {
+                handleChange('dateDebut', moment(date).format(), index)
+                setMinDate(date)
+              }}
+              autoOk={true}
+              InputProps={{ disableUnderline: true }}
+              cancelLabel='Annuler'
+            />
+          </Col>
+          <Col>
+            <InputTitle>Date de fin</InputTitle>
+            <DatePicker
+              format='dddd DD MMMM yyyy'
+              placeholder='selectionner une date de fin'
+              value={dateFin ? (dateFin > minDate ? dateFin : minDate) : null}
+              onChange={(date) => {
+                handleChange('dateFin', moment(date).format(), index)
+                setMinDate(false)
+              }}
+              autoOk={true}
+              cancelLabel='Annuler'
+              initialFocusedDate={minDate}
+              minDate={minDate ? minDate : ''}
+              InputProps={{ disableUnderline: true }}
+              invalidDateMessage={false}
+            />
+          </Col>
+        </Row>
+      </ThemeProvider>
     </MuiPickersUtilsProvider>
   )
 }
