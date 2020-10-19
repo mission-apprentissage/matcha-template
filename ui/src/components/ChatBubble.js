@@ -49,7 +49,6 @@ const Wrapper = styled.div`
   display: flex;
   padding-top: 1rem;
   padding-bottom: 2rem;
-  /* animation: ${bounce} 0.5s linear; */
 `
 
 const ChatBubble = ({ children, darken }) => {
@@ -64,7 +63,7 @@ const ChatBubble = ({ children, darken }) => {
       <LogoBubble darken={darken}>
         <img alt='logo' src={leaf} />
       </LogoBubble>
-      {!showMessage ? <Loading /> : <Bubble darken={darken}>{children}</Bubble>}
+      {showMessage ? <Bubble darken={darken}>{children}</Bubble> : <Loading />}
     </Wrapper>
   )
 }
