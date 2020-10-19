@@ -1,21 +1,12 @@
 import React from 'react'
+import { delay } from 'lodash-es'
 import styled, { keyframes } from 'styled-components'
 import leaf from '../assets/images/leaf-bubble.svg'
+import Loading from './Loading'
 
-const scaleInFromLeft = keyframes`
-  from{
-    -webkit-transform: scale(0);
-            transform: scale(0);
-    -webkit-transform-origin: 0% 50%;
-            transform-origin: 0% 50%;
-    opacity: 0;
-  }
-  to{
-    -webkit-transform: scale(1);
-            transform: scale(1);
-    -webkit-transform-origin: 0% 50%;
-            transform-origin: 0% 50%;
-    opacity: 1;
+const appearSequence = keyframes`
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
 `
 
 const bounce = keyframes`
@@ -30,37 +21,15 @@ const bounce = keyframes`
   }
 `
 
-/* The typing effect */
-const typing = keyframes`
-  from { width: 0 }
-  to { width: 100% }
-`
-
-/* The typewriter cursor effect */
-const blinkCaret = keyframes`
-  from, to { border-color: transparent }
-  50% { border-color: orange; }
-`
-
 const Bubble = styled.div`
   font-family: Marianne;
   font-size: 1rem;
   background: ${(props) => (props.darken ? 'rgba(165, 165, 180, 0.16)' : '#FAFAFC')};
-  border-radius: 16px 16px 16px 0px;
+  border-radius: 16px 16px 16px 4px;
   padding: 0.5rem;
-  opacity: 0;
-  animation: ${scaleInFromLeft} 0.3s linear;
-  animation-delay: 0.3s;
-  animation-fill-mode: forwards;
-`
-
-const Text = styled.h1`
-  overflow: hidden; /* Ensures the content is not revealed until the animation */
-  border-right: 0.15em solid orange; /* The typwriter cursor */
-  white-space: nowrap; /* Keeps the content on a single line */
-  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-  letter-spacing: 0.1em; /* Adjust as needed */
-  animation: ${typing} 3.5s steps(40, end), ${blinkCaret} 0.75s step-end infinite;
+  flex-grow: 1;
+  margin-left: 1em;
+  animation: ${appearSequence} 0.3s linear;
 `
 
 const LogoBubble = styled.div`
@@ -84,14 +53,18 @@ const Wrapper = styled.div`
 `
 
 const ChatBubble = ({ children, darken }) => {
+  const [showMessage, setShowMessage] = React.useState(false)
+  React.useEffect(() => {
+    if (!showMessage) {
+      delay(setShowMessage, 1500, true)
+    }
+  }, [showMessage])
   return (
     <Wrapper>
       <LogoBubble darken={darken}>
         <img alt='logo' src={leaf} />
       </LogoBubble>
-      <Bubble darken={darken} className='flex-grow-1 ml-2'>
-        {children}
-      </Bubble>
+      {!showMessage ? <Loading /> : <Bubble darken={darken}>{children}</Bubble>}
     </Wrapper>
   )
 }
