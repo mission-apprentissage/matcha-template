@@ -84,12 +84,12 @@ module.exports = () => {
    * Get item by id
    */
   router.get(
-    "/items/:id",
+    "/item/:questionnaireId",
     tryCatch(async (req, res) => {
-      const itemId = req.params.id;
-      const retrievedData = await Questionnaire.findById(itemId);
+      const { questionnaireId } = req.params;
+      const retrievedData = await Questionnaire.find({ questionnaire_id: questionnaireId });
       if (retrievedData) {
-        res.json([retrievedData]);
+        res.json(retrievedData);
       } else {
         throw boom.badRequest("Identifiant invalide");
       }
@@ -194,7 +194,7 @@ module.exports = () => {
           mobilite: item.mobilite,
         }).then((result) => res.json(result));
       } else {
-        logger.info("Updating questionnaire: ", questionnaireId, item);
+        logger.info("Updating questionnaire: ", questionnaireId);
         await Questionnaire.findOneAndUpdate(
           { questionnaire_id: questionnaireId },
           {

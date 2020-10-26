@@ -39,8 +39,8 @@ const Formulaire = (props) => {
 }
 
 export default () => {
-  const { addItem, saveContext } = React.useContext(Context)
-  const [contactState, setContactState] = React.useState([{}])
+  const { profile, addItem, saveContext } = React.useContext(Context)
+  const [contactState, setContactState] = React.useState(profile.recommandations ? profile.recommandations : [{}])
   const history = useHistory()
 
   React.useEffect(() => {

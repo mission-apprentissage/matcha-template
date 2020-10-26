@@ -1,7 +1,8 @@
-import { Homepage, First, Final, NotLooking, End } from './pages'
+import { Homepage, First, Final, NotLooking, End, Connexion } from './pages'
 import { StepOne, StepTwo, StepThree, StepFour, StepFive, StepSix, StepOneNC, StepTwoNC } from './pages/Steps'
 
 export default [
+  { component: Connexion, path: '/connexion' },
   {
     component: Homepage,
     path: '/',

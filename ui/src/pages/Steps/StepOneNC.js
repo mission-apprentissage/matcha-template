@@ -102,10 +102,11 @@ export default () => {
   const [submit, setSubmit] = React.useState(false)
 
   const history = useHistory()
-  const questionnaireId = uuid()
+  const questionnaireId = profile.questionnaire_id ? profile.questionnaire_id : uuid()
 
   React.useEffect(() => {
     window.scrollTo(0, 0)
+    check(stepState, setSubmit, ['formation', 'metier', 'etablissement', 'niveau'])
   }, [])
 
   const handleJobSearch = async (search) => {

@@ -7,6 +7,7 @@ const Context = React.createContext({
   check: () => {},
   addItem: () => {},
   saveContext: () => {},
+  cleanState: () => {},
 })
 
 class ContextProvider extends React.Component {
@@ -19,13 +20,22 @@ class ContextProvider extends React.Component {
       check: this.check,
       addItem: this.addItem,
       saveContext: this.saveContext,
+      cleanState: this.cleanState,
     }
   }
 
   updateUser = (data) =>
     this.setState({
       profile: { ...this.state.profile, ...data },
+      questionnaireId: data.questionnaire_id ? data.questionnaire_id : this.state.questionnaireId,
     })
+
+  cleanState = () => {
+    this.setState({
+      profile: {},
+      questionnaireId: null,
+    })
+  }
 
   check = (state, fn, keys) => {
     let flag = true
@@ -77,6 +87,7 @@ class ContextProvider extends React.Component {
   }
 
   render() {
+    console.log(this.state.profile)
     return <Context.Provider value={this.state}>{this.props.children}</Context.Provider>
   }
 }
